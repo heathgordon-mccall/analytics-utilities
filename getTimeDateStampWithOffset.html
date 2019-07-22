@@ -1,0 +1,53 @@
+<html>
+    <head>
+
+        <script>
+
+
+
+            var getTimeStampString = function()
+            {
+                // Get local client time as ISO string with timezone offset at the end and return as a String.
+
+                var now = new Date();
+                var tzo = -now.getTimezoneOffset();
+                var dif = tzo >= 0 ? '+' : '-';
+
+
+                var formatNumberForTSString = function(num) // rounds number to nearest non negative number and formats it with a leading 0 if it's a single digit
+                {
+                    var norm = Math.abs(Math.floor(num));
+                    return (norm < 10 ? '0' : '') + norm;
+                };
+
+                return now.getFullYear() // concatenates all the sections of the time date string together
+                    + '-' + formatNumberForTSString(now.getMonth()+1)
+                    + '-' + formatNumberForTSString(now.getDate())
+                    + 'T' + formatNumberForTSString(now.getHours())
+                    + ':' + formatNumberForTSString(now.getMinutes()) 
+                    + ':' + formatNumberForTSString(now.getSeconds())
+                    + '.' + formatNumberForTSString(now.getMilliseconds())
+                    + dif + formatNumberForTSString(tzo / 60) // dif is the =/- character set above. tzo is divided by 60 as it by default is in minutes
+                    + ':' + formatNumberForTSString(tzo % 60); // remainder of timezone offset is set if there is a offset less than a whole hour
+            }
+
+
+
+            function displayOutput(valueToDisplay, elementID) // appends passed in value to passed in html element ID
+            {
+                document.getElementById(elementID).innerText += '\n' + valueToDisplay();
+            }
+
+        </script>
+    </head>
+    <body>
+
+
+        <button onclick="displayOutput(getTimeStampString, 'labelForOutput')">click me</button>
+
+        <div id="labelForOutput"></div>
+
+
+
+    </body>
+</html>
